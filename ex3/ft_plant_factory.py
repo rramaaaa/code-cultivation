@@ -1,14 +1,11 @@
 class Plant:
-    def __init__(self, name, starting_height, starting_age):
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
-        self.starting_height = starting_height
-        self.starting_age = starting_age
+        self.height = height
+        self.age = age
 
-    def create(self):
-        print(
-            f"Created: {self.name} ({self.starting_height}cm, "
-            f"{self.starting_age} days)"
-        )
+    def create(self) -> None:
+        print(f"Created: {self.name} ({self.height}cm, {self.age} days)")
 
 
 if __name__ == "__main__":
@@ -20,6 +17,6 @@ if __name__ == "__main__":
         Plant("Sunflower", 80, 45),
         Plant("Fern", 15, 120)
     ]
-    for i in range(len(plants)):
-        plants[i].creat()
-    print("\nTotal plants created:", len(plants))
+    for i in range(5):
+        plants[i].create()
+    print("\nTotal plants created:", 5)
