@@ -31,14 +31,14 @@ class FloweringPlant(Plant):
 
 class PrizeFlower(FloweringPlant):
     def __init__(
-        self, name: str, height: int, age: int, color: str, prize: int
+        self, name: str, height: int, age: int, color: str, prize_points: int
     ) -> None:
         super().__init__(name, height, age, color)
-        self.prize = prize
+        self.prize_points = prize_points
 
     def info_line(self) -> str:
         base = super().info_line()
-        return f"{base}, Prize points: {self.prize}"
+        return f"{base}, Prize points: {self.prize_points}\n"
 
 
 class Garden:
@@ -53,13 +53,17 @@ class Garden:
         self.plants_added += 1
         print(f"Added {plant.name} to {self.owner}'s garden")
 
-    def help_all_plant_grow(self) -> None:
-        print(f"{self.owner} is helping all plants grow...")
+    def help_all_plant_grow(self, silent: bool = False) -> None:
+        if not silent:
+            print(f"{self.owner} is helping all plants grow...")
         for plant in self.plants:
             before = plant.height
-            plant.grow()
-            after = plant.height
-            self.total_growth += (after - before)
+            if silent:
+                plant.height += 1
+            else:
+                plant.grow()
+            self.total_growth += (plant.height - before)
+        print()
 
     def show_basic_report(self) -> None:
         print(f"=== {self.owner}'s Garden Report ===")
@@ -183,6 +187,8 @@ class GardenManager:
         bob_plant = Plant("Cactus", 90, 200)
         manager.add_plant_to_garden("Bob", bob_plant)
 
+        print()
+
         return manager
 
 
@@ -195,10 +201,13 @@ if __name__ == "__main__":
     if alice_garden:
         alice_garden.help_all_plant_grow()
         manager.show_full_report("Alice")
+
     bob_garden = manager.get_garden("Bob")
     if bob_garden:
-        bob_garden.help_all_plant_grow()
+        bob_garden.help_all_plant_grow(silent=True)
+
     print(f"Height validation test: {GardenManager.validate_height(10)}")
+
     scores = manager.garden_scores()
     print(
         f"Garden scores - Alice: {scores.get('Alice')}, "
