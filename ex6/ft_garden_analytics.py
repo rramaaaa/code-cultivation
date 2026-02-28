@@ -11,6 +11,15 @@ class Plant:
     def info_line(self) -> str:
         return f"- {self.name}: {self.height}cm"
 
+    def get_prize_points(self) -> int:
+        return 0
+
+    def is_blooming(self) -> bool:
+        return False
+
+    def get_type(self) -> str:
+        return "regular"
+
 
 class FloweringPlant(Plant):
     def __init__(self, name: str, height: int, age: int, color: str) -> None:
@@ -28,6 +37,12 @@ class FloweringPlant(Plant):
             state = "not blooming"
         return f"- {self.name}: {self.height}cm, {self.color}flowers ({state})"
 
+    def is_blooming(self) -> bool:
+        return self.blooming
+
+    def get_type(self) -> str:
+        return "flowering"
+
 
 class PrizeFlower(FloweringPlant):
     def __init__(
@@ -39,6 +54,12 @@ class PrizeFlower(FloweringPlant):
     def info_line(self) -> str:
         base = super().info_line()
         return f"{base}, Prize points: {self.prize_points}\n"
+
+    def get_prize_points(self) -> int:
+        return self.prize_points
+
+    def get_type(self) -> str:
+        return "prize"
 
 
 class Garden:
@@ -79,13 +100,16 @@ class GardenManager:
             regular = 0
             flowering = 0
             prize = 0
+
             for plant in garden.plants:
-                if hasattr(plant, "prize_points"):
+                t = plant.get_type()
+                if t == "prize":
                     prize += 1
-                elif hasattr(plant, "color"):
+                elif t == "flowering":
                     flowering += 1
                 else:
                     regular += 1
+
             return regular, flowering, prize
 
         @staticmethod
@@ -99,15 +123,14 @@ class GardenManager:
         def total_prize_points(garden: "Garden") -> int:
             total = 0
             for plant in garden.plants:
-                if hasattr(plant, "prize_points"):
-                    total += plant.prize_points
+                total += plant.get_prize_points()
             return total
 
         @staticmethod
         def blooming_count(garden: "Garden") -> int:
             total = 0
             for plant in garden.plants:
-                if hasattr(plant, "blooming") and plant.blooming:
+                if plant.is_blooming():
                     total += 1
             return total
 

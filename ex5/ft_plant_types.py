@@ -16,7 +16,7 @@ class Flower(Plant):
             f"{self.age} days, {self.color} color"
         )
 
-    def bloom(self) -> None:
+    def action(self) -> None:
         print(f"{self.name} is blooming beautifully!")
 
 
@@ -31,7 +31,7 @@ class Tree(Plant):
             f"{self.age} days, {self.trunk}cm diameter"
         )
 
-    def produce_shade(self) -> None:
+    def action(self) -> None:
         shade_area = self.trunk + 28
         print(f"{self.name} provides {shade_area} square meters of shade")
 
@@ -50,12 +50,13 @@ class Vegetable(Plant):
             f"{self.age} days, {self.harvest} harvest"
         )
 
-    def nutrition(self) -> None:
+    def action(self) -> None:
         print(f"{self.name} is rich in {self.value}")
 
 
 if __name__ == "__main__":
     print("=== Garden Plant Types ===")
+    print()
     plants = [
         Flower("Rose", 25, 30, "red"),
         Flower("Lily", 35, 40, "white"),
@@ -68,12 +69,6 @@ if __name__ == "__main__":
     ]
 
     for i in range(6):
-        if isinstance(plants[i], Flower):
-            plants[i].show_info()
-            plants[i].bloom()
-        elif isinstance(plants[i], Tree):
-            plants[i].show_info()
-            plants[i].produce_shade()
-        else:
-            plants[i].show_info()
-            plants[i].nutrition()
+        plants[i].show_info()
+        plants[i].action()
+        print()
